@@ -8,4 +8,4 @@ build:
 
 .PHONY: generate
 generate: build
-	docker run -v $(pwd)/site:/out $(BUILD_NAME)
+	docker run -v $(shell pwd)/site:/out $(BUILD_NAME)

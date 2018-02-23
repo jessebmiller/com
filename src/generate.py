@@ -82,6 +82,7 @@ def main():
     load_templates()
     root_template = templates.get("root", lambda x: x)
     load_pages()
+    print("Saving site")
     for path, html in pages.items():
         file_path = os.path.join(SITE_ROOT, path.strip("/"))
         print(file_path)

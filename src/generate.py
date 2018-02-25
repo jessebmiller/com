@@ -4,6 +4,7 @@ import markdown
 
 PAGES_PATH = os.environ.get("PAGES_PATH", "./src/content/pages")
 TEMPLATES_PATH = os.environ.get("TEMPLATES_PATH", "./src/content/templates")
+STATIC_FILES_PATH = os.environ.get("STATIC_FILES_PATH", "./src/content/static")
 SITE_ROOT = os.environ.get("SITE_ROOT", "/out")
 
 engines = {
@@ -77,19 +78,54 @@ def load_pages():
             pages[path] = engines[fmt](content, {})
 
 
+static_files = {
+    # path: content
+}
+
+
+def load_static_files():
+    """
+    Load all the static files
+
+    For now just write them into the site folder maintaining the folder
+    structure
+
+    """
+
+    print("Loading static files from {}".format(STATIC_FILES_PATH))
+    for root, dirs, files in os.walk(STATIC_FILES_PATH):
+        for file_name in files:
+            path = os.path.join(root, file_name)[len(STATIC_FILES_PATH):]
+            with open(os.path.join(root, file_name), 'r') as staticfile:
+                content = staticfile.read()
+            static_files[path] = content
+
+
 def main():
     print("Generating site")
     load_templates()
     root_template = templates.get("root", lambda x: x)
     load_pages()
-    print("Saving site")
     for path, html in pages.items():
         file_path = os.path.join(SITE_ROOT, path.strip("/"))
         print(file_path)
         with open(file_path, 'w') as pagefile:
             pagefile.write(
-                root_template({"content": html, "title": "Jesse B. Miller"}),
+                root_template({
+                    "title": "Jesse B. Miller",
+                    "content": html,
+                }),
             )
+    load_static_files()
+    for path, content in static_files.items():
+        file_path = os.path.join(SITE_ROOT, "static", path.strip("/"))
+        print(file_path)
+        try:
+            os.makedirs(os.path.join(SITE_ROOT, "static"))
+        except:
+            pass
+        with open(file_path, 'w') as staticfile:
+            staticfile.write(content)
 
 
 if __name__ == "__main__":

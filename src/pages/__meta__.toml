@@ -1,0 +1,7 @@
+__compilers__ = [
+  "__format__",
+  "templates/full.j2",
+  "templates/root.j2",
+]
+
+title = "Jesse B. Miller"

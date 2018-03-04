@@ -1,95 +1,106 @@
-import os
-from jinja2 import Template
-import markdown
+import frontmatter, os, toml, functools
+from compilers import make_compiler
+from settings import (
+    SITE_ROOT,
+    SITE_CONFIG,
+    TARGET_ROOT,
+)
 
-PAGES_PATH = os.environ.get("PAGES_PATH", "./src/content/pages")
-TEMPLATES_PATH = os.environ.get("TEMPLATES_PATH", "./src/content/templates")
-SITE_ROOT = os.environ.get("SITE_ROOT", "/out")
 
-engines = {
-    # format_extension: (template_string, context) -> html
-    "j2": lambda tmpl, ctx: Template(tmpl).render(ctx),
-    "md": lambda content, ctx: markdown.markdown(content, **ctx),
-    "html": lambda content, _: content,
-}
-
-templates = {
-    # name: context -> html
+parsers = {
+    "toml": lambda data: toml.loads(data)
 }
 
 
-def load_templates():
+def parse(path):
+    """ Parse the contents of the file at path with the appropriate parser """
+    fmt = path.split(".")[-1]
+    with open(path, 'r') as parsefile:
+        return parsers[fmt](parsefile.read())
+
+
+def get_metacontent(root_meta, path):
+    name, fmt = os.path.basename(path).split(".")
+    file_metacontent = frontmatter.load(path)
+    metacontent = {}
+    metacontent.update(root_meta)
+    metacontent.update({
+        "__content__": file_metacontent.content,
+        "__format__": fmt,
+        "__name__": name,
+        "__dir__": os.path.dirname(path)
+    })
+    metacontent.update(file_metacontent.metadata)
+    return metacontent
+
+
+def get_meta(root):
+    """ find a file named __meta__.* and return it's parsed contents """
+    (_, _, filenames) = list(os.walk(root))[0]
+    for filename in filenames:
+        name, fmt = filename.split(".")
+        if name == "__meta__":
+            with open(os.path.join(root, filename), 'r') as f:
+                return parsers[fmt](f.read())
+
+    # No meta file found return empty metadata
+    return {}
+
+
+def compose(*functions):
+    return functools.reduce(
+        lambda f, g: lambda x: f(g(x)),
+        functions,
+        lambda x: x,
+    )
+
+
+def compile_metacontent(metacontent):
+    # Make a compiler from every compiler listed
+    compilers = map(make_compiler, metacontent["__compilers__"])
+    # Compose the compilers and run the metacontent through it and return it
+    print("\n\nCompiling {}".format(metacontent["__name__"]))
+    return compose(*compilers)(metacontent)
+
+
+def generate(content_dir):
     """
-    Load all the templates
-
-    The name and format are in the filename
-    /templates/root.j2 is a jinja2 template named "root"
-
-    The dictionary should be template names to render functions
-    "name": (context -> html)
+    Given a path to some content, generate it
 
     """
 
-    print("Loading templates from {}".format(TEMPLATES_PATH))
-    formats = {}
-    paths = {}
-    for root, dirs, files in os.walk(TEMPLATES_PATH):
-        for file_name in files:
-            name, fmt = file_name.split(".")
-            formats[name] = fmt
-            path = os.path.join(root, file_name)
-            paths[name] = path
+    # Get all the metacontent
+    metacontent = []
+    for root, dirs, files in os.walk(content_dir):
+        # Each dir may have a directory meta
+        meta = get_meta(root)
+        meta["__compilers__"].reverse()
+        for filename in files:
+            # Skip files in dunders and hidden files
+            if filename.startswith("."):
+                continue
+            name, _ = filename.split(".")
+            if name.startswith("__") and name.endswith("__"):
+                continue
+            filepath = os.path.join(root, filename)
+            # Each file metacontent is a combination of the folder meta and the
+            # file's meta
+            metacontent.append(get_metacontent(meta, filepath))
 
-    for name, fmt in formats.items():
-        with open(paths[name], 'r') as tmpl_file:
-            tmpl = tmpl_file.read()
-        templates[name] = lambda ctx: engines[fmt](tmpl, ctx)
+    compiled_content = [compile_metacontent(mc) for mc in metacontent]
 
-
-pages = {
-    # path: html string
-}
-
-def load_pages():
-    """
-    Load all the pages
-
-    The name and format are the filename
-    pages/index.md is a markdown file with the index content
-
-    Eventually there may be a metadata system to specify what template a page
-    should be rendered with, but not yet. It's early
-
-    Everything is then rendered with the root template
-
-    The site structure matches the structure of the pages folder
-
-    """
-
-    print("Loading pages from {}".format(PAGES_PATH))
-    for root, dirs, files in os.walk(PAGES_PATH):
-        for file_name in files:
-            name, fmt = file_name.split(".")
-            path = os.path.join(root, "{}.html".format(name))[len(PAGES_PATH):]
-            print(path)
-            with open(os.path.join(root, file_name), 'r') as pagefile:
-                content = pagefile.read()
-            pages[path] = engines[fmt](content, {})
+    for cc in compiled_content:
+        filename = "{}.{}".format(cc["__name__"], cc["__format__"])
+        out_path = os.path.join(TARGET_ROOT, filename)
+        with open(out_path, 'w') as outfile:
+            outfile.write(cc["__content__"])
 
 
 def main():
-    print("Generating site")
-    load_templates()
-    root_template = templates.get("root", lambda x: x)
-    load_pages()
-    print("Saving site")
-    for path, html in pages.items():
-        file_path = os.path.join(SITE_ROOT, path.strip("/"))
-        print(file_path)
-        with open(file_path, 'w') as pagefile:
-            pagefile.write(
-                root_template({"content": html, "title": "Jesse B. Miller"}),
-            )
+    config = parse(SITE_CONFIG)
+    for content_dir in config["generate"]:
+        run_dir = os.path.dirname(__file__)
+        generate(os.path.join(run_dir, content_dir))
 
 
 if __name__ == "__main__":

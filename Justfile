@@ -9,7 +9,7 @@ build:
 
 # Generate the static files
 generate: build
-	docker run -v `pwd`/_site:/out {{build_name}}
+	docker run -it -v `pwd`/_site:/out {{build_name}}
 
 
 # deploy to ipfs

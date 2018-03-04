@@ -9,7 +9,8 @@ name = "pypi"
 
 "jinja2" = "*"
 markdown = "*"
-
+toml = "*"
+python-frontmatter = "*"
 
 [dev-packages]
 

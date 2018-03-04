@@ -13,6 +13,6 @@ RUN pipenv install --system
 COPY . .
 
 VOLUME /out
-ENV SITE_ROOT /out
+ENV TARGET_ROOT /out
 
 CMD python src/generate.py

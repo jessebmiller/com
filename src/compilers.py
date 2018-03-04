@@ -15,9 +15,7 @@ def format_compiler(metacontent):
 def markdown_compiler(metacontent):
     print("markdown {}".format(metacontent["__name__"]))
     compiled_content = markdown.markdown(
-        metacontent["__content__"],
-        **metacontent,
-    )
+        metacontent["__content__"], **metacontent)
     metacontent["__content__"] = compiled_content
     metacontent["__format__"] = "html"
     return metacontent

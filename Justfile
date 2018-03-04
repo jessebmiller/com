@@ -5,6 +5,7 @@ site_name = `cat CNAME`
 # Build the environment
 build:
 	docker build -t {{build_name}} .
+	docker run {{build_name}} pip freeze > requirements.txt
 
 
 # Generate the static files

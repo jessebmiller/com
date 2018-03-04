@@ -36,7 +36,7 @@ def get_metacontent(root_meta, path):
 
 def get_meta(root):
     """ find a file named __meta__.* and return it's parsed contents """
-    (_, _, filenames) = os.walk(root).__next__()
+    (_, _, filenames) = list(os.walk(root))[0]
     for filename in filenames:
         name, fmt = filename.split(".")
         if name == "__meta__":

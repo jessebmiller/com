@@ -15,5 +15,5 @@ generate: build
 # deploy to netlify by pushing to github
 deploy: generate
 	git add _site/*
-	git commit -am 'deploying'
+	git commit -am 'deploying to netlify'
 	git push

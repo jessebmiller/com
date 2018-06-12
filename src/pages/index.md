@@ -4,9 +4,8 @@ title: Jesse B. Miller
 
 ### Work with me on GitHub
 
-**[Curatable](https://github.com/jessebmiller/curatable)** is a collaboration
-with [Luke Haynes](http://lukehaynes.com). We're making a quilt that gets itself
-exhibited.
+**[The Incrementalist](https://github.com/jessebmiller/inc.xyz)** is
+incrementing towards a decentralized publication platform (PLATFORM!!!).
 
 **[Fern](https://github.com/jessebmiller/fern)** is a personal eternal computing
 system.

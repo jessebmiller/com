@@ -6,13 +6,13 @@ WORKDIR /workspace
 RUN pip install pipenv
 
 COPY ./Pipfile ./Pipfile
-COPY ./Pipfile.lock ./Pipfile.lock
+# COPY ./Pipfile.lock ./Pipfile.lock
 
-RUN pipenv install --system
+RUN pipenv install
 
 COPY . .
 
 VOLUME /out
 ENV TARGET_ROOT /out
 
-CMD python src/generate.py
+CMD pipenv run python src/generate.py

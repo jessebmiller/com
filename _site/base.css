@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css?family=Abril+Fatface|Open+Sans:400,700');
+
+html {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
+    background: #fefefe;
+    color: #222;
+}
+
+footer {
+    padding: 2vw;
+    margin-top: 5vw;
+}
+
+h1, h2, h3, h4, h5, h6{
+    font-family: 'Abril Fatface', cursive;
+}
+
+h3, h4, h5, h6 {
+    margin: 1em 0em .4em 0em;
+}
+
+h3 {
+    font-size: 1.1em;
+}
+
+h4 {
+    font-size: 0.9em;
+}
+
+h5 {
+    font-size: 0.7em;
+}
+
+p, li {
+    margin: 1vh 0vh;
+    line-height: 2em;
+    font-size: 18px;
+}
+
+ul {
+    line-height: 1.4em;
+    list-style-type: circle;
+}
+
+strong {
+    font-weight: bold;
+}
+
+a:link {
+    color: inherit;
+}
+
+a:visited {
+    color: inherit;
+}
+
+a:hover {
+    color: red;
+}
+
+a:active {
+    color: red;
+}
+
+header {
+    line-height: 1.5em;
+    padding-top: 10vw;
+    padding-bottom: 4.4vw;
+}
+
+header a {
+    color: #222;
+    text-decoration: none;
+}
+
+header h1 {
+    font-size: 3em;
+}
+
+header h2 {
+    font-size: 1.84em;
+}
+
+@media only screen and (min-width: 600px) {
+
+    .full-column {
+        width: 60vw;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    html {
+        font-size: 3.07vw;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+
+    .full-column {
+        width: 85vw;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    html {
+        font-size: 4.36vw;
+    }
+}

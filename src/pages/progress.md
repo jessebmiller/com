@@ -1,7 +1,6 @@
-title: Progress | Jesse B. Miller
-
 ---
-
+title: Progress | Jesse B. Miller
+---
 # Progress
 
 I'll be updating this page with progress reports, as a sort of decentralized standup. Anyone interested

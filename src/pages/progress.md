@@ -3,8 +3,9 @@ title: Progress | Jesse B. Miller
 ---
 # Progress
 
-I'll be updating this page with progress reports, as a sort of decentralized standup. Anyone interested
-in getting involved with my projects please get in touch.
+I'll be updating this page with progress reports, as a sort of decentralized
+stand. Anyone interested in getting involved with my projects please get in
+touch.
 
 ## July 15, 2018
 

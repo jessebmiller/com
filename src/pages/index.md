@@ -4,7 +4,7 @@ title: Jesse B. Miller
 
 ### See what I'm working on
 
-My **[Progress](https://www.jessebmiller.com/progress)** page is where I post
+My **[Progress](http://www.jessebmiller.com/progress)** page is where I post
 what I'm working on.
 
 ### Work with me on GitHub

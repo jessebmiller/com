@@ -7,6 +7,12 @@ I'll be updating this page with progress reports, as a sort of decentralized
 stand. Anyone interested in getting involved with my projects please get in
 touch.
 
+## Sep 1, 2018
+
+* Created a board in Notion to track DAOstack proposal ideas
+* Drafted a proposal to help Genesis Alpha 2.0 stay on budget by displaying the
+  percent of holdings a proposal is requesting
+
 ## Aug 31, 2018
 
 * Sketched ideas for a continuous peer to peer face to face micropayment system

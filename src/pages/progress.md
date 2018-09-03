@@ -7,6 +7,18 @@ I'll be updating this page with progress reports, as a sort of decentralized
 stand. Anyone interested in getting involved with my projects please get in
 touch.
 
+## Sep 2, 2018
+
+* Built the basic function of a SpankBank keeper (KeepSpank) that maintains
+  one's stake
+* Researched methods of managing keys for running the keeper
+
+### future work
+
+* Test methods of key management for keeper operation
+* Write keeper operations automation
+* Design and build multitennant interface for using the keeper
+
 ## Sep 1, 2018
 
 * Created a board in Notion to track DAOstack proposal ideas

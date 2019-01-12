@@ -4,7 +4,7 @@ title: Jesse B. Miller
 
 ### Work with me on GitHub
 
-**[Set Match Games]**(https://github.com/setmatchgames) is
+**[Set Match Games](https://github.com/setmatchgames)** is
 creating a decentralized system for game design.
 
 ### Find me on Twitter
